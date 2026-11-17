@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KrisbiGo | Flights Made Personal</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f6fb;color:#17243b}
+header{background:#102b50;color:white;padding:24px 7%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:27px;font-weight:bold}
+.logo span{color:#48c5df}
+header small{color:#dceafa}
+.hero{background:linear-gradient(120deg,#102b50,#17638b);color:white;padding:45px 7%;text-align:center}
+.hero h1{font-size:36px;margin:0 0 12px}
+.hero p{font-size:17px;color:#e1effa}
+main{max-width:760px;margin:30px auto;padding:0 16px}
+.card{background:white;border-radius:16px;padding:26px;box-shadow:0 8px 30px #18395b12}
+h2{margin-top:0;color:#102b50}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.field{margin-bottom:16px}
+label{display:block;font-size:13px;font-weight:bold;margin-bottom:7px;color:#30435c}
+input,select,textarea{width:100%;padding:13px;border:1px solid #d6dfeb;border-radius:8px;font-size:15px;background:white}
+textarea{min-height:90px;resize:vertical}
+button{width:100%;padding:16px;border:0;border-radius:9px;background:#087da9;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+button:hover{background:#075f83}
+.note{font-size:12px;color:#68778b;line-height:1.5}
+#result{display:none;margin-top:20px;padding:18px;background:#e9f7ef;border-radius:10px;line-height:1.6;overflow-wrap:anywhere}
+footer{text-align:center;padding:25px;color:#6a7890;font-size:13px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}.hero h1{font-size:28px}.card{padding:19px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Krisbi<span>Go</span></div>
+  <small>Flights made personal.</small>
+</header>
+
+<section class="hero">
+  <h1>Your journey starts here.</h1>
+  <p>Tell us where you want to fly. We'll help find the right flight for you.</p>
+</section>
+
+<main>
+<div class="card">
+<h2>Request a flight quote</h2>
+<p class="note">Submit your travel requirements and our team will help you find suitable options.</p>
+
+<form id="flightForm">
+<div class="field">
+<label>Trip type</label>
+<select id="trip">
+<option>Round trip</option>
+<option>One way</option>
+<option>Multi-city</option>
+</select>
+</div>
+
+<div class="grid">
+<div class="field">
+<label>From</label>
+<input id="from" placeholder="e.g. Detroit (DTW)" required>
+</div>
+<div class="field">
+<label>To</label>
+<input id="to" placeholder="e.g. Mumbai (BOM)" required>
+</div>
+<div class="field">
+<label>Departure date</label>
+<input id="depart" type="date" required>
+</div>
+<div class="field">
+<label>Return date</label>
+<input id="return" type="date">
+</div>
+<div class="field">
+<label>Passengers</label>
+<select id="pax">
+<option>1</option><option>2</option><option>3</option>
+<option>4</option><option>5</option><option>6</option>
+<option>7</option><option>8</option><option>9</option>
+</select>
+</div>
+<div class="field">
+<label>Cabin class</label>
+<select id="cabin">
+<option>Economy</option>
+<option>Premium Economy</option>
+<option>Business</option>
+<option>First Class</option>
+</select>
+</div>
+</div>
+
+<h2>Passenger details</h2>
+<div class="field">
+<label>Full name</label>
+<input id="name" placeholder="Full name as per passport" required>
+</div>
+<div class="grid">
+<div class="field">
+<label>Email</label>
+<input id="email" type="email" placeholder="Your email" required>
+</div>
+<div class="field">
+<label>Phone / WhatsApp</label>
+<input id="phone" type="tel" placeholder="Phone number" required>
+</div>
+<div class="field">
+<label>Nationality</label>
+<select id="nationality">
+<option>Indian</option><option>American</option>
+<option>Canadian</option><option>British</option><option>Other</option>
+</select>
+</div>
+<div class="field">
+<label>US immigration status</label>
+<select id="status">
+<option>US citizen</option>
+<option>US Green Card holder</option>
+<option>Valid US visa</option>
+<option>No US visa / Not applicable</option>
+<option>Other / Not sure</option>
+</select>
+</div>
+</div>
+
+<div class="field">
+<label>Special requests</label>
+<textarea id="requests" placeholder="Preferred airline, baggage, stops, special assistance..."></textarea>
+</div>
+
+<button type="submit">Submit flight enquiry</button>
+</form>
+
+<div id="result"></div>
+<p class="note">Demo version: your enquiry is not yet saved or emailed. Do not enter passport numbers or sensitive documents.</p>
+</div>
+</main>
+
+<footer>© 2026 KrisbiGo. Flights made personal.</footer>
+
+<script>
+document.getElementById("flightForm").addEventListener("submit",function(e){
+e.preventDefault();
+const v=id=>document.getElementById(id).value;
+if(v("trip")==="Round trip" && !v("return")){
+alert("Please enter your return date.");return;
+}
+const details={
+trip:v("trip"),from:v("from"),to:v("to"),
+departure:v("depart"),returnDate:v("return"),
+passengers:v("pax"),cabin:v("cabin"),
+name:v("name"),email:v("email"),phone:v("phone"),
+nationality:v("nationality"),status:v("status"),
+requests:v("requests")
+};
+const result=document.getElementById("result");
+result.style.display="block";
+result.innerHTML="<strong>Thank you, "+details.name+"!</strong><br>Your demo enquiry has been prepared.<br><br><strong>Route:</strong> "+details.from+" → "+details.to+"<br><strong>Departure:</strong> "+details.departure+"<br><strong>Trip:</strong> "+details.trip+"<br><strong>Passengers:</strong> "+details.passengers+"<br><br><strong>Demo only:</strong> No enquiry has been transmitted. Email and database connection will be added next.";
+result.scrollIntoView({behavior:"smooth"});
+});
+</script>
+</body>
+</html>
